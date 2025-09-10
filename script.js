@@ -33,16 +33,17 @@ $(document).ready(function(){
         $('.menu-btn i').toggleClass("active");
     });
 
-    // typing text animation script
-    var typed = new Typed(".typing", {
-        strings: ["Developer", "Self Learner", "Freelancer", "Tester", "Traveller","photographer",""],
+        // Typing text animation script for .typing
+    var typed1 = new Typed(".typing", {
+        strings: ["Embedded Developer", "Firmware Engineer", "C/C++ Programmer", "Python Scripter", "Self Learner", "Automotive Enthusiast"],
         typeSpeed: 100,
         backSpeed: 60,
         loop: true
     });
 
-    var typed = new Typed(".typing-2", {
-        strings: ["YouTuber", "Developer", "Blogger", "Designer", "Freelancer"],
+    // Typing text animation script for .typing-2
+    var typed2 = new Typed(".typing-2", {
+        strings: ["AUTOSAR Developer", "SOME/IP Integrator", "RTOS Enthusiast", "CAN Protocol Specialist", ""],
         typeSpeed: 100,
         backSpeed: 60,
         loop: true
