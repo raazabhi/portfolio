@@ -1,74 +1,58 @@
-$(document).ready(function(){
-    $(window).scroll(function(){
-        // sticky navbar on scroll script
-        if(this.scrollY > 20){
-            $('.navbar').addClass("sticky");
-        }else{
-            $('.navbar').removeClass("sticky");
+document.addEventListener("DOMContentLoaded", () => {
+    
+    // --- Mobile Navigation ---
+    const hamburger = document.querySelector(".hamburger");
+    const navMenu = document.querySelector(".nav-menu");
+
+    hamburger.addEventListener("click", () => {
+        hamburger.classList.toggle("active");
+        navMenu.classList.toggle("active");
+    });
+
+    document.querySelectorAll(".nav-link").forEach(n => n.addEventListener("click", () => {
+        hamburger.classList.remove("active");
+        navMenu.classList.remove("active");
+    }));
+
+    // --- Typing Animation ---
+    if (document.querySelector(".typing")) {
+        new Typed(".typing", {
+            strings: ["Embedded Software Engineer", "Firmware Engineer", "AUTOSAR Developer", "Automotive Enthusiast"],
+            typeSpeed: 60,
+            backSpeed: 35,
+            loop: true
+        });
+    }
+
+    // --- Keyboard Arrow Key Navigation ---
+    const sections = Array.from(document.querySelectorAll('main section'));
+    let currentSectionIndex = 0;
+
+    const scrollToSection = (index) => {
+        if (index >= 0 && index < sections.length) {
+            sections[index].scrollIntoView({ behavior: 'smooth' });
         }
-        
-        // scroll-up button show/hide script
-        if(this.scrollY > 500){
-            $('.scroll-up-btn').addClass("show");
-        }else{
-            $('.scroll-up-btn').removeClass("show");
-        }
-    });
-
-    // slide-up script
-    $('.scroll-up-btn').click(function(){
-        $('html').animate({scrollTop: 0});
-        // removing smooth scroll on slide-up button click
-        $('html').css("scrollBehavior", "auto");
-    });
-
-    $('.navbar .menu li a').click(function(){
-        // applying again smooth scroll on menu items click
-        $('html').css("scrollBehavior", "smooth");
-    });
-
-    // toggle menu/navbar script
-    $('.menu-btn').click(function(){
-        $('.navbar .menu').toggleClass("active");
-        $('.menu-btn i').toggleClass("active");
-    });
-
-        // Typing text animation script for .typing
-    var typed1 = new Typed(".typing", {
-        strings: ["Embedded Developer", "Firmware Engineer", "C/C++ Programmer", "Python Scripter", "Self Learner", "Automotive Enthusiast"],
-        typeSpeed: 100,
-        backSpeed: 60,
-        loop: true
-    });
-
-    // Typing text animation script for .typing-2
-    var typed2 = new Typed(".typing-2", {
-        strings: ["AUTOSAR Developer", "SOME/IP Integrator", "RTOS Enthusiast", "CAN Protocol Specialist", ""],
-        typeSpeed: 100,
-        backSpeed: 60,
-        loop: true
-    });
-
-    // owl carousel script
-    $('.carousel').owlCarousel({
-        margin: 20,
-        loop: true,
-        autoplay: true,
-        autoplayTimeOut: 2000,
-        autoplayHoverPause: true,
-        responsive: {
-            0:{
-                items: 1,
-                nav: false
-            },
-            600:{
-                items: 2,
-                nav: false
-            },
-            1000:{
-                items: 3,
-                nav: false
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                currentSectionIndex = sections.indexOf(entry.target);
             }
+        });
+    }, { threshold: 0.6 });
+
+    sections.forEach(section => observer.observe(section));
+
+    window.addEventListener('keydown', (e) => {
+        // Updated to include left and right arrow keys
+        if ((e.key === 'ArrowDown' || e.key === 'ArrowRight') && currentSectionIndex < sections.length - 1) {
+            e.preventDefault();
+            scrollToSection(currentSectionIndex + 1);
+        } else if ((e.key === 'ArrowUp' || e.key === 'ArrowLeft') && currentSectionIndex > 0) {
+            e.preventDefault();
+            scrollToSection(currentSectionIndex - 1);
         }
     });
+
 });
