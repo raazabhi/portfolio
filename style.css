@@ -71,7 +71,14 @@ section {
     position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
     background: rgba(10, 25, 47, 0.85); backdrop-filter: blur(10px);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out; /* For smooth hiding/showing */
 }
+
+/* This class will be added by JavaScript to hide the header */
+.header.header-hidden {
+    transform: translateY(-100%);
+}
+
 .navbar {
     display: flex; justify-content: space-between; align-items: center;
     height: 80px; max-width: 1200px; margin: auto; padding: 0 2rem;
@@ -95,19 +102,20 @@ section {
 
 /* --- Home Section --- */
 .home {
-    align-items: flex-start;
     justify-content: center;
+    align-items: flex-start;
     padding-left: 15rem;
     background-image:
         linear-gradient(rgba(10, 25, 47, 0.8), rgba(10, 25, 47, 0.8));
-        /* url('https://images.unsplash.com/photo-1534723328310-e82dad3ee43f?auto=format&fit=crop&q=80'); */
+        /* linear-gradient(rgba(10, 25, 47, 0.8), rgba(10, 25, 47, 0.8)), */
+        /* url('https://images.unsplash.com/photo-1593720219276-0b1eacd0aef4?auto=format&fit=crop&q=80'); */
     background-size: cover;
     background-position: center;
 }
 .home-content { max-width: 800px; }
 .home-intro {
     color: var(--primary-color); font-family: var(--font-mono);
-    font-size: 2rem; margin-bottom: 1rem;
+    font-size: 1.1rem; margin-bottom: 1rem;
 }
 .h1-wrapper {
     height: 10rem;
@@ -132,6 +140,13 @@ section {
     font-weight: 500; transition: all 0.3s ease; border: 1px solid var(--primary-color);
 }
 .btn:hover { background: rgba(0, 170, 255, 0.1); }
+.social-links { display: flex; align-items: center; gap: 2rem; margin-top: 2rem; }
+.social-links a {
+    color: var(--text-color); font-size: 1.8rem; text-decoration: none;
+    transition: color 0.3s, transform 0.2s;
+}
+.social-links a:hover { color: var(--primary-color); transform: translateY(-3px); }
+
 
 /* --- About & Skills --- */
 .about-flex-container {
@@ -215,6 +230,15 @@ section {
 }
 
 /* --- Contact & Footer --- */
+.contact {
+    justify-content: space-between;
+}
+.contact-main-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
 .contact-box {
     text-align: center;
     background: var(--card-bg-color);
@@ -239,20 +263,16 @@ section {
     background: var(--primary-color);
     color: #fff;
 }
-.social-links { display: flex; justify-content: center; gap: 2rem; margin-top: 2.5rem; }
-.social-links a {
-    color: var(--text-color); font-size: 1.8rem; text-decoration: none;
-    transition: color 0.3s, transform 0.2s;
+.contact-box .social-links {
+    margin-top: 2.5rem;
 }
-.social-links a:hover { color: var(--primary-color); transform: translateY(-3px); }
 
 .footer {
-    position: fixed; bottom: 0; left: 0; width: 100%; z-index: 1000;
+    width: 100%;
     text-align: center;
     padding: 1rem 0;
     font-family: var(--font-mono);
-    font-size: 0.7rem;
-    border-top: 1px;
+    font-size: 0.9rem;
     flex-shrink: 0;
 }
 
