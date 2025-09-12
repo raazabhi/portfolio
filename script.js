@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     
+    const mainScrollContainer = document.querySelector('main');
+
     // --- Mobile Navigation ---
     const hamburger = document.querySelector(".hamburger");
     const navMenu = document.querySelector(".nav-menu");
@@ -18,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (document.querySelector(".typing")) {
         new Typed(".typing", {
             strings: ["Embedded Software Engineer", "Firmware Engineer", "AUTOSAR Developer", "Automotive Enthusiast"],
-            typeSpeed: 60,
+            typeSpeed: 70,
             backSpeed: 35,
             loop: true
         });
@@ -45,7 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
     sections.forEach(section => observer.observe(section));
 
     window.addEventListener('keydown', (e) => {
-        // Updated to include left and right arrow keys
         if ((e.key === 'ArrowDown' || e.key === 'ArrowRight') && currentSectionIndex < sections.length - 1) {
             e.preventDefault();
             scrollToSection(currentSectionIndex + 1);
@@ -54,5 +55,30 @@ document.addEventListener("DOMContentLoaded", () => {
             scrollToSection(currentSectionIndex - 1);
         }
     });
+
+    // --- Auto-Hide Header on Mobile ---
+    if (window.matchMedia("(max-width: 768px)").matches) {
+        const header = document.querySelector('.header');
+        let lastScrollY = mainScrollContainer.scrollTop;
+
+        mainScrollContainer.addEventListener('scroll', () => {
+            // Don't hide header if the mobile menu is open
+            if (navMenu.classList.contains('active')) {
+                return;
+            }
+
+            const currentScrollY = mainScrollContainer.scrollTop;
+
+            if (currentScrollY > lastScrollY && currentScrollY > 50) {
+                // Scrolling Down
+                header.classList.add('header-hidden');
+            } else {
+                // Scrolling Up or at the top
+                header.classList.remove('header-hidden');
+            }
+
+            lastScrollY = currentScrollY;
+        });
+    }
 
 });
