@@ -1,5 +1,20 @@
 document.addEventListener("DOMContentLoaded", () => {
     
+    // --- FIX for 100vh on Mobile ---
+    // This function calculates the actual viewport height and sets it as a CSS variable.
+    const setViewportHeight = () => {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
+
+    // Run it once on initial load
+    setViewportHeight();
+
+    // Run it again whenever the window is resized
+    window.addEventListener('resize', setViewportHeight);
+
+
+    // --- The rest of your script remains the same ---
     const mainScrollContainer = document.querySelector('main');
 
     // --- Mobile Navigation ---
@@ -61,7 +76,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let lastScrollY = mainScrollContainer.scrollTop;
 
     mainScrollContainer.addEventListener('scroll', () => {
-        // Don't hide header if the mobile menu is open
         if (navMenu.classList.contains('active')) {
             return;
         }
@@ -69,10 +83,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const currentScrollY = mainScrollContainer.scrollTop;
 
         if (currentScrollY > lastScrollY && currentScrollY > 50) {
-            // Scrolling Down
             header.classList.add('header-hidden');
         } else {
-            // Scrolling Up or at the top
             header.classList.remove('header-hidden');
         }
 

@@ -12,7 +12,8 @@
     --border-color: #233554;
     --font-primary: 'Poppins', sans-serif;
     --font-mono: 'Roboto Mono', monospace;
-    --header-height: 80px; /* Define header height as a variable */
+    --header-height: 80px;
+    /* The --vh variable will be set by JavaScript */
 }
 
 /* --- Base & Reset --- */
@@ -32,7 +33,8 @@ body {
 
 /* --- Full Page Snap Scrolling Container --- */
 main {
-    height: 100vh;
+    /* CORRECTED: Uses the JS-calculated height */
+    height: calc(var(--vh, 1vh) * 100);
     overflow-y: scroll;
     scroll-snap-type: y mandatory;
     scroll-behavior: smooth;
@@ -40,7 +42,8 @@ main {
 }
 
 section {
-    height: 100vh;
+    /* CORRECTED: Uses the JS-calculated height */
+    height: calc(var(--vh, 1vh) * 100);
     width: 100%;
     scroll-snap-align: start;
     scroll-snap-stop: always;
@@ -68,20 +71,15 @@ section {
     transform: translateX(-50%); width: 60px; height: 3px;
     background: var(--primary-color); border-radius: 2px;
 }
-
-/* --- Header & Navbar --- */
 .header {
     position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
     background: rgba(10, 25, 47, 0.85); backdrop-filter: blur(10px);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease-in-out; /* ADDED: For smooth animation */
+    transition: transform 0.3s ease-in-out;
 }
-
-/* ADDED: This class hides the header by sliding it up */
 .header.header-hidden {
     transform: translateY(-100%);
 }
-
 .navbar {
     display: flex; justify-content: space-between; align-items: center;
     height: var(--header-height);
@@ -105,8 +103,6 @@ section {
     display: block; width: 25px; height: 3px; margin: 5px auto;
     background-color: var(--heading-color); transition: all 0.3s ease-in-out;
 }
-
-/* --- Home Section --- */
 .home {
     justify-content: flex-start;
     align-items: flex-start;
@@ -151,9 +147,6 @@ section {
     transition: color 0.3s, transform 0.2s;
 }
 .social-links a:hover { color: var(--primary-color); transform: translateY(-3px); }
-
-
-/* --- About & Skills --- */
 .about-flex-container {
     display: flex;
     flex-direction: column;
@@ -176,7 +169,6 @@ section {
 .about-content { text-align: left; flex-grow: 1; line-height: 1.7; }
 .about-content p { margin-bottom: 1rem; }
 .about-content p:last-child { margin-bottom: 0; }
-
 .skills-grid {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 1.5rem; text-align: center; width: 100%;
@@ -187,8 +179,6 @@ section {
 }
 .skill-category h3 { color: var(--heading-color); margin-bottom: 1rem; font-size: 1.2rem; }
 .skill-category p { line-height: 1.6; }
-
-/* --- Experience Timeline --- */
 .timeline {
     position: relative; max-width: 700px; margin: auto;
     padding: 2rem 0;
@@ -215,8 +205,6 @@ section {
     content: '\2023'; color: var(--primary-color);
     position: absolute; left: 0; font-size: 1.2em; line-height: 1;
 }
-
-/* --- Projects --- */
 .projects-grid {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 1.5rem; width: 100%;
@@ -233,12 +221,9 @@ section {
     color: var(--primary-color); background: rgba(0, 170, 255, 0.1);
     padding: 4px 10px; border-radius: 15px;
 }
-
 .experience, .projects {
     justify-content: flex-start;
 }
-
-/* --- Contact & Footer --- */
 .contact {
     justify-content: space-between;
 }
@@ -275,7 +260,6 @@ section {
 .contact-box .social-links {
     margin-top: 2.5rem;
 }
-
 .footer {
     width: 100%;
     text-align: center;
@@ -284,8 +268,6 @@ section {
     font-size: 0.9rem;
     flex-shrink: 0;
 }
-
-/* --- Responsive --- */
 @media (min-width: 769px) {
     .about-flex-container {
         flex-direction: row; text-align: left;
