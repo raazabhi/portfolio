@@ -39,7 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                // CORRECTED: Used the correct variable name
                 currentSectionIndex = sections.indexOf(entry.target);
             }
         });
@@ -48,7 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
     sections.forEach(section => observer.observe(section));
 
     window.addEventListener('keydown', (e) => {
-        // CORRECTED: Used the correct variable name
         if ((e.key === 'ArrowDown' || e.key === 'ArrowRight') && currentSectionIndex < sections.length - 1) {
             e.preventDefault();
             scrollToSection(currentSectionIndex + 1);
@@ -58,26 +56,27 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // --- Auto-Hide Header on Mobile ---
-    if (window.matchMedia("(max-width: 768px)").matches) {
-        const header = document.querySelector('.header');
-        let lastScrollY = mainScrollContainer.scrollTop;
+    // --- Auto-Hide Header on Scroll ---
+    const header = document.querySelector('.header');
+    let lastScrollY = mainScrollContainer.scrollTop;
 
-        mainScrollContainer.addEventListener('scroll', () => {
-            if (navMenu.classList.contains('active')) {
-                return;
-            }
+    mainScrollContainer.addEventListener('scroll', () => {
+        // Don't hide header if the mobile menu is open
+        if (navMenu.classList.contains('active')) {
+            return;
+        }
 
-            const currentScrollY = mainScrollContainer.scrollTop;
+        const currentScrollY = mainScrollContainer.scrollTop;
 
-            if (currentScrollY > lastScrollY && currentScrollY > 50) {
-                header.classList.add('header-hidden');
-            } else {
-                header.classList.remove('header-hidden');
-            }
+        if (currentScrollY > lastScrollY && currentScrollY > 50) {
+            // Scrolling Down
+            header.classList.add('header-hidden');
+        } else {
+            // Scrolling Up or at the top
+            header.classList.remove('header-hidden');
+        }
 
-            lastScrollY = currentScrollY;
-        });
-    }
+        lastScrollY = currentScrollY;
+    });
 
 });
