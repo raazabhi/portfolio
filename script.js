@@ -39,6 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
+                // CORRECTED: Used the correct variable name
                 currentSectionIndex = sections.indexOf(entry.target);
             }
         });
@@ -47,6 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
     sections.forEach(section => observer.observe(section));
 
     window.addEventListener('keydown', (e) => {
+        // CORRECTED: Used the correct variable name
         if ((e.key === 'ArrowDown' || e.key === 'ArrowRight') && currentSectionIndex < sections.length - 1) {
             e.preventDefault();
             scrollToSection(currentSectionIndex + 1);
@@ -62,7 +64,6 @@ document.addEventListener("DOMContentLoaded", () => {
         let lastScrollY = mainScrollContainer.scrollTop;
 
         mainScrollContainer.addEventListener('scroll', () => {
-            // Don't hide header if the mobile menu is open
             if (navMenu.classList.contains('active')) {
                 return;
             }
@@ -70,10 +71,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const currentScrollY = mainScrollContainer.scrollTop;
 
             if (currentScrollY > lastScrollY && currentScrollY > 50) {
-                // Scrolling Down
                 header.classList.add('header-hidden');
             } else {
-                // Scrolling Up or at the top
                 header.classList.remove('header-hidden');
             }
 
