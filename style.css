@@ -107,8 +107,9 @@ section {
 
 /* --- Home Section --- */
 .home {
-    justify-content: center;
-    align-items: flex-start;
+    /* CORRECTED: Restored intended layout */
+    justify-content: flex-start;
+    align-items: center;
     padding-left: 15rem;
     /* background-image: */
         /* linear-gradient(rgba(10, 25, 47, 0.8), rgba(10, 25, 47, 0.8)), */
