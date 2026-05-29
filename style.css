@@ -207,11 +207,185 @@ h1, h2, h3, h4 {
 
 /* --- Projects Section --- */
 .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
-.project-card { display: flex; flex-direction: column; justify-content: space-between; height: 100%; padding: 1.5rem; }
-.project-content h4 { font-size: 1.15rem; margin-bottom: 0.5rem; color: var(--text-heading); }
-.project-content p { font-size: 0.95rem; }
+.project-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    will-change: transform, box-shadow;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                border-color 0.35s ease;
+}
+.project-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.project-card:hover::before {
+    transform: scaleX(1);
+}
+.project-card:hover {
+    cursor: pointer;
+    transform: translateY(-4px);
+    border-color: rgba(59, 130, 246, 0.2);
+    box-shadow: 0 16px 40px -12px rgba(59, 130, 246, 0.15), 0 0 0 1px rgba(59, 130, 246, 0.08);
+}
+.project-content h4 {
+    font-size: 1.15rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-heading);
+    transition: color 0.3s ease;
+}
+.project-card:hover .project-content h4 {
+    color: var(--accent);
+}
+.project-content p {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--text-main);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
 .project-tech { display: flex; flex-wrap: wrap; gap: 0.75rem; list-style: none; margin-top: 1.5rem; }
-.project-tech li { font-size: 0.8rem; background: rgba(59, 130, 246, 0.1); padding: 2px 8px; border-radius: 4px; }
+.project-tech li {
+    font-size: 0.8rem;
+    background: rgba(59, 130, 246, 0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+.project-card:hover .project-tech li {
+    background: rgba(59, 130, 246, 0.2);
+}
+
+/* --- Project Hover Panel (appears at cursor point) --- */
+.hover-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 420px;
+    max-height: 70vh;
+    overflow-y: auto;
+    background: rgba(10, 10, 12, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(59, 130, 246, 0.15);
+    border-radius: 12px;
+    padding: 1.5rem;
+    z-index: 1000;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    will-change: transform, opacity;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 20px rgba(59, 130, 246, 0.1);
+    /* Custom scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) rgba(255, 255, 255, 0.05);
+}
+
+.hover-panel::-webkit-scrollbar { width: 4px; }
+.hover-panel::-webkit-scrollbar-track { background: transparent; }
+.hover-panel::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+
+.hover-panel.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto; /* Allows interaction/scrolling */
+}
+
+.hover-panel h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+}
+
+.hover-short-desc {
+    font-size: 0.9rem;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+    line-height: 1.5;
+}
+
+.hover-divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-secondary), transparent);
+    margin-bottom: 1rem;
+}
+
+/* --- Badge Styles (Timeline & Role) --- */
+.detail-badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-right: 0.5rem;
+    margin-bottom: 0.75rem;
+    background: rgba(59, 130, 246, 0.12);
+    color: var(--accent);
+    border: 1px solid rgba(59, 130, 246, 0.15);
+}
+
+.role-badge {
+    background: rgba(139, 92, 246, 0.12);
+    color: var(--accent-secondary);
+    border-color: rgba(139, 92, 246, 0.15);
+}
+
+/* --- Extended Details Headings --- */
+.extended-desc h5 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    margin-top: 0.75rem;
+}
+
+.extended-desc p {
+    margin-bottom: 0.75rem;
+    font-size: 0.92rem;
+    line-height: 1.65;
+    color: var(--text-main);
+}
+
+.extended-desc ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-bottom: 0.75rem;
+}
+
+.extended-desc ul li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.45rem;
+    font-size: 0.9rem;
+    color: var(--text-heading);
+    line-height: 1.5;
+}
+
+.extended-desc ul li::before {
+    content: '▹';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+}
+
 
 /* --- Contact Section --- */
 .contact-content { max-width: 600px; margin: 0 auto; }
@@ -241,7 +415,7 @@ h1, h2, h3, h4 {
         height: 100vh;
         overflow: hidden; /* Prevent body scroll to enable strict container snap */
     }
-    
+
     .snap-container {
         height: 100vh;
         overflow-y: scroll;
@@ -259,7 +433,7 @@ h1, h2, h3, h4 {
         justify-content: center;
         padding-top: var(--nav-height);
     }
-    
+
     /* Center the home section explicitly in its frame */
     .home.snap-section {
         justify-content: center;
@@ -274,7 +448,7 @@ h1, h2, h3, h4 {
     .fixed-header {
         flex-shrink: 0;
     }
-    
+
     .scrollable-content {
         flex-grow: 1;
         overflow-y: auto;
@@ -311,4 +485,6 @@ h1, h2, h3, h4 {
     .hamburger.active .bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
     .hamburger.active .bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
     .timeline-header { flex-direction: column; gap: 0.25rem; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .hover-panel { width: 300px; max-height: 60vh; }
 }

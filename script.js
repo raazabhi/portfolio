@@ -108,4 +108,93 @@ document.addEventListener("DOMContentLoaded", () => {
     revealElements.forEach(element => {
         revealObserver.observe(element);
     });
+
+    // --- Project Hover Panel Logic ---
+    const hoverPanel = document.getElementById('hoverPanel');
+    const hoverTitle = document.getElementById('hoverTitle');
+    const hoverTech = document.getElementById('hoverTech');
+    const hoverShortDesc = document.getElementById('hoverShortDesc');
+    const hoverExtendedDesc = document.getElementById('hoverExtendedDesc');
+
+    const projectCards = document.querySelectorAll('.project-card');
+    let hoverTimeout = null;
+    let hideTimeout = null;
+
+    projectCards.forEach(card => {
+        card.addEventListener('mouseenter', (e) => {
+            clearTimeout(hideTimeout);
+            // Small delay to avoid flickering on quick passes
+            hoverTimeout = setTimeout(() => {
+                // Extract data from the hovered card
+                const title = card.querySelector('h4').textContent;
+                const techHTML = card.querySelector('.project-tech').innerHTML;
+                const shortDesc = card.querySelector('.project-content p').textContent;
+                
+                const extendedNode = card.querySelector('.extended-details');
+                const extendedHTML = extendedNode ? extendedNode.innerHTML : '<p>Details coming soon...</p>';
+
+                // Populate panel
+                hoverTitle.textContent = title;
+                hoverTech.innerHTML = techHTML;
+                hoverShortDesc.textContent = shortDesc;
+                hoverExtendedDesc.innerHTML = extendedHTML;
+
+                // Position at cursor point with smart edge detection
+                positionPanel(e.clientX, e.clientY);
+
+                // Reset scroll memory so it starts at the top
+                hoverPanel.scrollTop = 0;
+
+                // Show panel
+                hoverPanel.classList.add('visible');
+            }, 150);
+        });
+
+        card.addEventListener('mouseleave', () => {
+            clearTimeout(hoverTimeout);
+            // Give the user a grace period to move their mouse into the panel
+            hideTimeout = setTimeout(() => {
+                hoverPanel.classList.remove('visible');
+            }, 300);
+        });
+    });
+
+    // Keep the panel open if the mouse enters the panel itself
+    hoverPanel.addEventListener('mouseenter', () => {
+        clearTimeout(hideTimeout);
+    });
+
+    // Hide the panel if the mouse leaves the panel
+    hoverPanel.addEventListener('mouseleave', () => {
+        hideTimeout = setTimeout(() => {
+            hoverPanel.classList.remove('visible');
+        }, 300);
+    });
+
+    function positionPanel(cursorX, cursorY) {
+        const panelW = hoverPanel.offsetWidth || 420;
+        const panelH = hoverPanel.offsetHeight || 400;
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const offset = 20; // Gap from cursor
+
+        // Decide: show to the right or left of cursor
+        let x = cursorX + offset;
+        if (x + panelW > vw - 20) {
+            x = cursorX - panelW - offset;
+        }
+        // Keep within left edge
+        if (x < 10) x = 10;
+
+        // Decide: show below or above cursor
+        let y = cursorY - 20;
+        if (y + panelH > vh - 20) {
+            y = vh - panelH - 20;
+        }
+        if (y < 10) y = 10;
+
+        hoverPanel.style.left = x + 'px';
+        hoverPanel.style.top = y + 'px';
+    }
+
 });
