@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Portfolio of Abhishek Kumar, an Embedded Software Engineer specializing in AUTOSAR, FreeRTOS, and automotive firmware.">
     <title>Abhishek Kumar | Embedded Software Engineer</title>
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
-    
+
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -121,7 +121,7 @@
                 </div>
             </div>
         </section>
-        
+
         <!-- 03. Experience -->
         <section class="experience section-padding snap-section" id="experience">
             <div class="container reveal full-height-container">
@@ -130,7 +130,7 @@
                     <div class="line"></div>
                 </div>
                 <div class="experience-content">
-                    
+
                     <!-- Zilogic Systems -->
                     <div class="timeline-item glass-card mb-2">
                         <div class="timeline-header">
@@ -167,64 +167,188 @@
                     <div class="line"></div>
                 </div>
                 <div class="projects-grid scrollable-content custom-scrollbar">
-                    
+
+                    <!-- 1. ADSP-SC594 Fault Trace -->
                     <div class="project-card glass-card">
                         <div class="project-content">
-                            <h4>ZSOMEIP Implementation</h4>
-                            <p>Developed a custom SOME/IP protocol stack for Linux and FreeRTOS environments using BSD sockets.</p>
+                            <h4>ADSP-SC594 Fault Trace</h4>
+                            <p>Implemented fault and schedule tracing for CPU/OS faults, storing trace data in DDR3 memory for retrieval during subsequent boots.</p>
+                            <div class="extended-details" style="display: none;">
+                                <h5>Overview</h5>
+                                <p>Designed and implemented a complete fault tracing subsystem for the ADSP-SC594 Audio DSP. When a CPU or OS fault occurs, the system automatically captures the fault context, schedule trace, and a backtrace up to 4 levels deep. This data is stored in a dedicated DDR3 region that persists across reboots.</p>
+                                <h5>Key Contributions</h5>
+                                <ul>
+                                    <li>Allocated dedicated memory sections in DDR3 via Linker Script modifications for persistent fault storage.</li>
+                                    <li>Built a capture mechanism that records CPU/OS fault details and the active task schedule trace at the moment of failure.</li>
+                                    <li>Implemented backtrace extraction (up to level 4) to pinpoint the exact call chain leading to the fault.</li>
+                                    <li>Developed boot-time retrieval logic that reads and displays the stored trace data from DDR3 on the next system startup.</li>
+                                    <li>Validated end-to-end by injecting faults and verifying correct data retrieval and integrity after reboot cycles.</li>
+                                </ul>
+                            </div>
                         </div>
                         <ul class="project-tech mono-text">
-                            <li>C</li><li>SOME/IP</li><li>LWIP</li>
+                            <li>C</li><li>Linker Scripts</li><li>DDR3</li><li>FreeRTOS</li>
                         </ul>
                     </div>
 
+                    <!-- 2. SOME/IP Stack Implementation -->
                     <div class="project-card glass-card">
                         <div class="project-content">
-                            <h4>Audio DSP OTA Upgrade (JLR CCCM)</h4>
+                            <h4>SOME/IP Stack Implementation</h4>
+                            <p>Built a custom SOME/IP protocol implementation in C, tailored for Linux and FreeRTOS using BSD sockets.</p>
+                            <div class="extended-details" style="display: none;">
+                                <h5>Overview</h5>
+                                <p>SOME/IP (Scalable service-Oriented MiddlewarE over IP) is the standard middleware protocol for Ethernet-based communication between automotive ECUs. This project built a portable SOME/IP implementation in C, designed to run across multiple operating systems (Linux, FreeRTOS) and network stacks (Linux TCP/IP, FreeRTOS+TCP, LwIP).</p>
+                                <h5>Key Contributions</h5>
+                                <ul>
+                                    <li>Researched and mapped the latest SOME/IP and SOME/IP-SD protocol specifications into the stack's internal architecture.</li>
+                                    <li>Analyzed the LwIP BSD socket API to ensure compatibility and optimal performance for embedded targets.</li>
+                                    <li>Developed a working demo application demonstrating service discovery, request/response, and event notification patterns.</li>
+                                    <li>Integrated the LwIP network stack into the demo using the BSD socket abstraction layer.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <ul class="project-tech mono-text">
+                            <li>C</li><li>SOME/IP</li><li>LwIP</li><li>BSD Sockets</li>
+                        </ul>
+                    </div>
+
+                    <!-- 3. Audio DSP Software Upgrade -->
+                    <div class="project-card glass-card">
+                        <div class="project-content">
+                            <h4>Audio DSP Software Upgrade</h4>
                             <p>Engineered robust OTA updates featuring Anti-Rollback, DLT support, and NVM fault resolution for an ADSP-SC594 board.</p>
+                            <div class="extended-details" style="display: none;">
+                                <h5>Overview</h5>
+                                <p>Built the complete Over-The-Air (OTA) update pipeline for an ADSP-SC594-based Audio DSP in a Jaguar Land Rover (JLR) infotainment system. The system features a dual-partition boot manager, supports upgrades in both Application and Fast Boot Loader modes, and communicates with the host domain (DOM0) via SOME/IP over TCP/IP, all running on FreeRTOS.</p>
+                                <h5>Key Contributions</h5>
+                                <ul>
+                                    <li>Analyzed the Generic UpdateCDD and OSPI Flash Driver codebase, then extended it to support new OTA requirements.</li>
+                                    <li>Improved error handling across the entire software update component for robustness under edge cases.</li>
+                                    <li>Redesigned the SOA-based upgrade flow and resolved critical NVM-related failures during update sequences.</li>
+                                    <li>Integrated Anti-Rollback protection and Rollback recovery mechanisms to prevent firmware downgrades and ensure safe failure recovery.</li>
+                                    <li>Enhanced system-level debugging by integrating Diagnostic Log and Trace (DLT) support.</li>
+                                    <li>Resolved all static analysis findings (MISRA-C, CERT-C) flagged by Klocwork.</li>
+                                    <li>Performed comprehensive unit testing using VectorCAST with high code coverage.</li>
+                                    <li>Conducted root cause analysis (RCA) on field issues using tcpdump, serial logs, Corvus traces, UDS/DoIP messages, and live system behavior.</li>
+                                </ul>
+                            </div>
                         </div>
                         <ul class="project-tech mono-text">
-                            <li>FreeRTOS</li><li>OTA</li><li>VectorCAST</li>
+                            <li>FreeRTOS</li><li>OTA</li><li>SOME/IP</li><li>DLT</li><li>Klocwork</li>
                         </ul>
                     </div>
 
-                    <div class="project-card glass-card">
-                        <div class="project-content">
-                            <h4>ADSP-BSW: NVM Client</h4>
-                            <p>Built async/sync NVM services to ensure critical data persistence and integrity across power cycles.</p>
-                        </div>
-                        <ul class="project-tech mono-text">
-                            <li>C</li><li>AUTOSAR NVM</li>
-                        </ul>
-                    </div>
-
+                    <!-- 4. ADSP-BSW: Implementation of LCM -->
                     <div class="project-card glass-card">
                         <div class="project-content">
                             <h4>ADSP-BSW: Life Cycle Manager</h4>
                             <p>Implemented state-machine driven graceful shutdown sequences utilizing Semaphore synchronization and SOME/IP.</p>
+                            <div class="extended-details" style="display: none;">
+                                <h5>Overview</h5>
+                                <p>The Life Cycle Manager (LCM) ensures a graceful shutdown of the Audio DSP SoC when the vehicle ignition is switched off. It safely terminates all running processes and persists critical data to prevent corruption. The LCM communicates with the QNX host domain over SOME/IP and is built entirely in C on FreeRTOS.</p>
+                                <h5>Key Contributions</h5>
+                                <ul>
+                                    <li>Architected concurrent operations using FreeRTOS Tasks, Queues, and Semaphores.</li>
+                                    <li>Implemented the SOME/IP server interface for receiving and responding to LCM lifecycle commands.</li>
+                                    <li>Built Protobuf serialization and deserialization for all LCM message types.</li>
+                                    <li>Ensured thread safety across shared resources using Semaphore-based synchronization.</li>
+                                    <li>Designed and implemented the core LCM state-machine governing all shutdown transitions.</li>
+                                    <li>Performed integration testing and end-to-end (E2E) validation of the complete LCM module.</li>
+                                    <li>Documented the full implementation with UML Sequence diagrams for team onboarding.</li>
+                                </ul>
+                            </div>
                         </div>
                         <ul class="project-tech mono-text">
-                            <li>FreeRTOS</li><li>Protobuf</li><li>SOME/IP</li>
+                            <li>FreeRTOS</li><li>Protobuf</li><li>SOME/IP</li><li>State Machine</li>
                         </ul>
                     </div>
 
+                    <!-- 5. ADSP-BSW: Implementation of NVM Client -->
+                    <div class="project-card glass-card">
+                        <div class="project-content">
+                            <h4>ADSP-BSW: NVM Client</h4>
+                            <p>Built async/sync NVM services to ensure critical data persistence and integrity across power cycles.</p>
+                            <div class="extended-details" style="display: none;">
+                                <h5>Overview</h5>
+                                <p>The NvM (Non-Volatile Memory) module provides both synchronous and asynchronous services for reading and writing data to Flash storage. It guarantees data persistence when the system is powered off, and is a critical component of the AUTOSAR Basic Software (BSW) stack. This module was implemented in C.</p>
+                                <h5>Key Contributions</h5>
+                                <ul>
+                                    <li>Studied the AUTOSAR NVM specification and mapped its requirements to the ADSP platform.</li>
+                                    <li>Documented the module's architecture, API surface, and integration best practices for downstream application teams.</li>
+                                    <li>Delivered detailed Knowledge Transfer (KT) sessions, enabling team members to independently integrate and debug the NVM client.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <ul class="project-tech mono-text">
+                            <li>C</li><li>AUTOSAR NVM</li><li>Flash</li>
+                        </ul>
+                    </div>
+
+                    <!-- 6. Bootloader Optimization -->
                     <div class="project-card glass-card">
                         <div class="project-content">
                             <h4>Bootloader Optimization</h4>
                             <p>Optimized the ADSP-SC594 boot process to run directly from SRAM, successfully enabling a secure boot architecture.</p>
+                            <div class="extended-details" style="display: none;">
+                                <h5>Overview</h5>
+                                <p>The ADSP-SC594 Audio DSP uses a two-stage boot process. The first-stage ROM bootloader loads an init code segment, which configures the on-board DDR, then the second-stage bootloader is loaded into DDR. This project eliminated the separate init code stage by integrating it directly into the second-stage bootloader, which is a critical prerequisite for implementing Secure Boot.</p>
+                                <h5>Key Contributions</h5>
+                                <ul>
+                                    <li>Reverse-engineered the existing Linker Scripts to fully understand the memory layout and boot flow.</li>
+                                    <li>Merged the init code logic (DDR configuration) directly into the second-stage bootloader.</li>
+                                    <li>Rewrote the Linker Scripts to relocate the bootloader to execute entirely from SRAM before DDR is available.</li>
+                                    <li>Verified that the unified bootloader image correctly configures DDR and boots the application.</li>
+                                    <li>Performed hardware-level validation on the target ADSP-SC594 board.</li>
+                                </ul>
+                            </div>
                         </div>
                         <ul class="project-tech mono-text">
-                            <li>Linker Scripts</li><li>Secure Boot</li>
+                            <li>Linker Scripts</li><li>SRAM</li><li>Secure Boot</li>
                         </ul>
                     </div>
 
+                    <!-- 7. SOME/IP TP Protocol Implementation -->
                     <div class="project-card glass-card">
                         <div class="project-content">
                             <h4>SOME/IP TP Protocol</h4>
                             <p>Built the AUTOSAR Transport Layer (TP) to seamlessly handle segmented UDP packet reassembly over PduR.</p>
+                            <div class="extended-details" style="display: none;">
+                                <h5>Overview</h5>
+                                <p>SOME/IP TP (Transport Protocol) handles large messages that exceed the maximum UDP payload size. It segments outgoing messages and reassembles incoming ones using the Protocol Data Unit Router (PduR) as defined in the AUTOSAR specification. This implementation was built in C.</p>
+                                <h5>Key Contributions</h5>
+                                <ul>
+                                    <li>Evaluated existing SOME/IP TP implementations against the AUTOSAR specification and identified gaps.</li>
+                                    <li>Refactored and fixed logical errors in the segmentation and reassembly logic.</li>
+                                    <li>Developed comprehensive unit-test suites using the Fake Function Framework (FFF).</li>
+                                    <li>Resolved all MISRA-C violations to bring the codebase into full compliance.</li>
+                                    <li>Performed end-to-end unit testing using VectorCAST with high branch and statement coverage.</li>
+                                </ul>
+                            </div>
                         </div>
                         <ul class="project-tech mono-text">
-                            <li>AUTOSAR</li><li>FFF</li><li>VectorCAST</li>
+                            <li>AUTOSAR</li><li>PduR</li><li>FFF</li><li>VectorCAST</li>
+                        </ul>
+                    </div>
+
+                    <!-- 8. SOME/IP Protocol Implementation -->
+                    <div class="project-card glass-card">
+                        <div class="project-content">
+                            <h4>SOME/IP Protocol Implementation</h4>
+                            <p>Evaluated and integrated the SOME/IP SD, Log, and Transport modules for FreeRTOS and FreeRTOS+TCP stack.</p>
+                            <div class="extended-details" style="display: none;">
+                                <h5>Overview</h5>
+                                <p>This project focused on integrating the SOME/IP Service Discovery (SD), Logging, and Transport modules into a unified protocol stack running on FreeRTOS with the FreeRTOS+TCP network layer. The work spanned two phases across different timelines.</p>
+                                <h5>Key Contributions</h5>
+                                <ul>
+                                    <li>Analyzed the existing codebase and integrated the SOME/IP SD, Log, and Transport modules into a cohesive stack.</li>
+                                    <li>Developed unit-test cases for the SD and Transport modules using utest and the Fake Function Framework (FFF).</li>
+                                    <li>Performed integration testing on the target ADSP hardware to validate end-to-end communication.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <ul class="project-tech mono-text">
+                            <li>C</li><li>FreeRTOS</li><li>SOME/IP</li><li>utest</li>
                         </ul>
                     </div>
 
@@ -246,7 +370,7 @@
                     <a href="mailto:abhishekraaz87@gmail.com" class="btn btn-primary contact-btn">
                         Say Hello <i class="fas fa-paper-plane"></i>
                     </a>
-                    
+
                     <div class="social-links-footer">
                         <a href="https://github.com/raazabhi" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
                         <a href="https://linkedin.com/in/abhishek-kumar-123920201" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
@@ -262,6 +386,15 @@
             <p>Designed & Built by Abhishek Kumar</p>
         </a>
     </footer>
+
+    <!-- Hover Expansion Panel (appears at cursor point) -->
+    <div class="hover-panel" id="hoverPanel">
+        <h3 id="hoverTitle" class="gradient-text"></h3>
+        <div id="hoverTech" class="project-tech mono-text mb-2"></div>
+        <p id="hoverShortDesc" class="hover-short-desc"></p>
+        <div class="hover-divider"></div>
+        <div id="hoverExtendedDesc" class="extended-desc"></div>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
     <script src="script.js"></script>
